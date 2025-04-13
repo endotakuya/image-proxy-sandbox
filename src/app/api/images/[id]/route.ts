@@ -7,10 +7,9 @@ const imageMap = {
   "3": "https://placehold.jp/500x500.png",
 } as const;
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } },
-) {
+type Params = Promise<{ id: string }>;
+
+export async function GET(request: Request, { params }: { params: Params }) {
   const { id } = await params;
 
   // 有効なIDかチェック
