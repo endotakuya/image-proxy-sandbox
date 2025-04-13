@@ -5,8 +5,8 @@ export async function GET() {
   const expires = Date.now() + 5 * 60 * 1000;
 
   // 生成するURL
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
+  const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : "http://localhost:3000";
   const url = `${baseUrl}/api/image?expires=${expires}`;
 
