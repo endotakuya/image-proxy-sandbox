@@ -9,9 +9,9 @@ const imageMap = {
 
 export async function GET(
   request: Request,
-  context: { params: { id: string } },
+  { params }: { params: { id: string } },
 ) {
-  const { id } = await context.params;
+  const { id } = await params;
 
   // 有効なIDかチェック
   if (!(id in imageMap)) {
