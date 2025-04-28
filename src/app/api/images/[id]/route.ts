@@ -11,16 +11,18 @@ type Params = Promise<{ id: string }>;
 export async function GET(request: Request, { params }: { params: Params }) {
   const { id } = await params;
 
-  // Cookieから認証情報を取得
-  const authCookie = request.headers.get("cookie")?.includes("auth=1");
+  // 認証チェック動作確認用
 
-  // 認証チェック
-  if (!authCookie) {
-    return NextResponse.json(
-      { error: "Authentication required" },
-      { status: 401 },
-    );
-  }
+  // // Cookieから認証情報を取得
+  // const authCookie = request.headers.get("cookie")?.includes("auth=1");
+
+  // // 認証チェック
+  // if (!authCookie) {
+  //   return NextResponse.json(
+  //     { error: "Authentication required" },
+  //     { status: 401 },
+  //   );
+  // }
 
   // 有効なIDかチェック
   if (!(id in imageMap)) {
