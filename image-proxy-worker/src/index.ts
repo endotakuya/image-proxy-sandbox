@@ -8,7 +8,7 @@ type Bindings = {
 const app = new Hono<{ Bindings: Bindings }>();
 
 const getImageOptions = (c: Context): RequestInitCfPropertiesImage => {
-  const { width, height, fit, format } = c.req.query();
+  const { width, height, fit, format, quality } = c.req.query();
 
   const imageOptions: RequestInitCfPropertiesImage = {};
 
@@ -17,6 +17,7 @@ const getImageOptions = (c: Context): RequestInitCfPropertiesImage => {
   if (fit) imageOptions.fit = fit as RequestInitCfPropertiesImage["fit"];
   if (format)
     imageOptions.format = format as RequestInitCfPropertiesImage["format"];
+  if (quality) imageOptions.quality = Number.parseInt(quality, 10);
 
   return imageOptions;
 };
@@ -78,10 +79,21 @@ app.get("/cf/images/:imageId", async (c) => {
 // そのため、画像用プロキシ Worker にリダイレクトする
 
 app.get("/_next/image", (c) => {
-  const { url } = c.req.query();
+  const { url, w, q } = c.req.query();
 
   if (url.startsWith(c.env.APP_URL) || url.startsWith("/cf/images/")) {
-    return c.redirect(new URL(url, c.req.raw.url).pathname, 301);
+    const imgUrl = new URL(url, c.req.raw.url);
+    const searchParams = imgUrl.searchParams;
+
+    if (!searchParams.has("fit")) {
+      if (w) {
+        searchParams.set("width", w);
+        searchParams.delete("height");
+      }
+      if (q) searchParams.set("quality", q);
+    }
+
+    return c.redirect(`${imgUrl.pathname}?${searchParams.toString()}`, 301);
   }
 
   return fetch(c.req.raw);
