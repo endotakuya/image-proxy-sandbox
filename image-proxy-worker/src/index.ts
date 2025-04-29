@@ -85,9 +85,10 @@ app.get("/_next/image", (c) => {
     const imgUrl = new URL(url, c.req.raw.url);
     const searchParams = imgUrl.searchParams;
 
-    if (!searchParams.has("fit")) {
+    if (!searchParams.has("fit") || searchParams.get("fit") === "contain") {
       if (w) {
         searchParams.set("width", w);
+        searchParams.set("fit", "contain");
         searchParams.delete("height");
       }
       if (q) searchParams.set("quality", q);
