@@ -13,16 +13,16 @@ export async function GET(request: Request, { params }: { params: Params }) {
 
   // 認証チェック動作確認用
 
-  // Cookieから認証情報を取得
-  const authCookie = request.headers.get("cookie")?.includes("auth=1");
+  // // Cookieから認証情報を取得
+  // const authCookie = request.headers.get("cookie")?.includes("auth=1");
 
-  // 認証チェック
-  if (!authCookie) {
-    return NextResponse.json(
-      { error: "Authentication required" },
-      { status: 401 },
-    );
-  }
+  // // 認証チェック
+  // if (!authCookie) {
+  //   return NextResponse.json(
+  //     { error: "Authentication required" },
+  //     { status: 401 },
+  //   );
+  // }
 
   // 有効なIDかチェック
   if (!(id in imageMap)) {
